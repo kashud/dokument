@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            #formularz{
+                background: rgb(236, 236, 236);
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div id="formularz">
+            Imię: <input type="text" id="imie"></br>
+            Nazwisko: <input type="text" id="nazwisko"></br>
+            Wiek: <input type="text" id="wiek"></br>
+            Płeć: <select id="płeć">
+                <option value="Kobieta">Kobieta</option>
+                <option value="Mężczyzna">Mężczyzna</option>
+            </select></br>
+            <button id="przeslij">Prześlij</button>
+        </div>
+        <div>
+            <table id="tabela" border="2">
+                <tr>
+                    <td>Imię</td>
+                    <td>Nazwisko</td>
+                    <td>Wiek</td>
+                    <td>Płeć</td>
+                    <td>Edytuj</td>
+                    <td>Usuń</td>
+                </tr>                 
+            </table>
+        </div>
+        <script>
+            document.getElementById("przeslij").onclick=przeslij;
+
+            var tablicaludzie = [];
+
+            function przeslij(){
+                // var imie = document.getElementById("imie").value;
+                // var nazwisko = document.getElementById("nazwisko").value;
+                // var wiek = document.getElementById("wiek").value;
+                // var płeć = document.getElementById("płeć").value;
+            
+                var nowaosoba = {
+                    imie: document.getElementById("imie").value,
+                    nazwisko: document.getElementById("nazwisko").value,
+                    wiek: document.getElementById("wiek").value,
+                    płeć: document.getElementById("płeć").value,
+                }
+
+
+                var tabela = document.getElementById("tabela");
+
+                // pierwszy sposob:
+                // tabela.innerHTML += "<tr> <td>" + imie + "</td> <td>" + nazwisko + "</td> <td>" + wiek + "</td> <td>" + płeć + "</td> </tr>";
+
+                // drugi sposob:
+                var nrwiersza = eval(tabela.rows.length);
+                var row = document.createElement("tr");
+                var td1 = document.createElement("td");
+                var td2 = document.createElement("td");
+                var td3 = document.createElement("td");
+                var td4 = document.createElement("td");
+                var td5 = document.createElement("td");
+                var td6 = document.createElement("td");
+                var edytuj = document.createElement("button");
+                var usun = document.createElement("button");
+                usun.setAttribute("id", nrwiersza);
+                edytuj.setAttribute("id", nrwiersza);
+
+                row.appendChild(td1);
+                row.appendChild(td2);
+                row.appendChild(td3);
+                row.appendChild(td4);
+                row.appendChild(td5);
+                row.appendChild(td6);
+                td5.appendChild(edytuj);
+                td6.appendChild(usun);
+                tabela.appendChild(row); 
+                           
+
+                var txtNode1 = document.createTextNode(nowaosoba.imie);
+                td1.appendChild(txtNode1);
+                var txtNode2 = document.createTextNode(nowaosoba.nazwisko);
+                td2.appendChild(txtNode2);
+                var txtNode3 = document.createTextNode(nowaosoba.wiek);
+                td3.appendChild(txtNode3);
+                var txtNode4 = document.createTextNode(nowaosoba.płeć);
+                td4.appendChild(txtNode4);
+                var txtNode5 = document.createTextNode("Edytuj");
+                edytuj.appendChild(txtNode5);
+                var txtNode6 = document.createTextNode("Usuń");
+                usun.appendChild(txtNode6);  
+
+                function dodajosobe(){
+                    tablicaludzie.push(nowaosoba);
+                    tablicaludzie[nrwiersza-1].id=nrwiersza;
+                }
+                dodajosobe();
+
+                usun.onclick = remove;
+                edytuj.onclick = edit;
+                
+                function edit(){
+                    td1.innerHTML = "<input type='text' id='edit1'>";
+                    td2.innerHTML = "<input type='text' id='edit2'>";
+                    td3.innerHTML = "<input type='text' id='edit3'>";
+                    td4.innerHTML = "<select id='edit4'> <option value='Kobieta'>Kobieta</option> <option value='Mężczyzna'>Mężczyzna</option></select>";
+                    edytuj.innerText = "Zapisz";
+                    edytuj.onclick = zapisywanie;
+
+                    function zapisywanie(){
+
+                        var nowaosoba2 = {
+                            imie: document.getElementById("edit1").value,
+                            nazwisko: document.getElementById("edit2").value,
+                            wiek: document.getElementById("edit3").value,
+                            płeć: document.getElementById("edit4").value,
+                        }
+
+                       
+
+                        td1.innerHTML = "";
+                        td2.innerHTML = "";
+                        td3.innerHTML = ""
+                        td4.innerHTML = "";
+
+                        var txtNode11 = document.createTextNode(nowaosoba2.imie);
+                        td1.appendChild(txtNode11);
+                        var txtNode22 = document.createTextNode(nowaosoba2.nazwisko);
+                        td2.appendChild(txtNode22);
+                        var txtNode33 = document.createTextNode(nowaosoba2.wiek);
+                        td3.appendChild(txtNode33);
+                        var txtNode44 = document.createTextNode(nowaosoba2.płeć);
+                        td4.appendChild(txtNode44);
+
+                        edytuj.innerText = "Edytuj";
+                        edytuj.onclick = edit;
+                        tablicaludzie[nrwiersza - 1] = nowaosoba2;
+                    }
+                }
+                // function remove(event){
+                //     console.log(event.target.parentElement.parentElement);
+                //     event.target.parentElement.parentElement.remove();
+                //     tablicaludzie.splice(eval(id-1), 1);
+                // }
+                function remove(event) {
+                var index;
+                var tablica = document.getElementById("tabela");
+                event.target.parentElement.parentElement.remove();
+                for (i=0; i<tablicaludzie.length; i++){
+                    if(tablicaludzie[i].id == event.target.id)
+                        index = i;
+                }
+                tablicaludzie.splice(index, 1);
+            
+            }
+            }
+        </script>
+    </body>
+</html>
